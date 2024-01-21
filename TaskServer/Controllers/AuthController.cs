@@ -16,9 +16,9 @@ public class AuthController : Controller
     }
 
     [HttpPost("register")]
-    public IActionResult Register(string email, string password)
+    public IActionResult Register(string login, string password)
     {
-        if (_authRepository.Register(email, password))
+        if (_authRepository.Register(login, password))
         {
             return new OkResult();
         }
@@ -27,9 +27,9 @@ public class AuthController : Controller
     }
 
     [HttpGet("login")]
-    public IActionResult Login(string email, string password)
+    public IActionResult Login(string login, string password)
     {
-        var token = _authRepository.Login(email, password);
+        var token = _authRepository.Login(login, password);
         if (String.IsNullOrEmpty(token))
         {
             return new ConflictResult();

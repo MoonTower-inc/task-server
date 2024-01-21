@@ -75,8 +75,27 @@ public class TaskRepository : RepositoryBase, ITaskRepository
         }
     }
 
-    public void ActiveTask_Insert(string token)
+    public long? ActiveTask_Insert(string token, ActiveTask task)
     {
-        throw new NotImplementedException();
+        using (var dataSource = NpgsqlDataSource.Create(_connectionString))
+        {
+            using (var connection = dataSource.OpenConnection())
+            {
+                using (var cmd = new NpgsqlCommand("SELECT * FROM task.task_insert(@_token, @_title, @_description)", connection)
+                       {
+                           Parameters =
+                           {
+                               safeNpgsqlParameter("_token", token),
+                               safeNpgsqlParameter("_title", task.Title),
+                               safeNpgsqlParameter("_description", task.Description),
+                           }
+                       })
+                {
+                    var newId = cmd.ExecuteScalar() as long?;
+
+                    return newId;
+                };
+            }   
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TaskServer.Models;
 using TaskServer.Repository.Interface;
 
 namespace TaskServer.Controllers;
@@ -25,5 +26,12 @@ public class TaskController : Controller
     {
         var doneTasks = _taskRepository.DoneTasks_Select(token);
         return new JsonResult(doneTasks);
+    }
+
+    [HttpGet("insert")]
+    public IActionResult Insert(string token, string title, string description)
+    {
+        var newTaskId = _taskRepository.ActiveTask_Insert(token, new ActiveTask{Title = title, Description = description});
+        return new JsonResult(new Dictionary<string, long?>{{"insertedTaskID", newTaskId}});
     }
 }

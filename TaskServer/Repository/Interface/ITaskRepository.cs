@@ -8,5 +8,5 @@ public interface ITaskRepository
 
     public List<DoneTask> DoneTasks_Select(string token);
 
-    public void ActiveTask_Insert(string token);
+    public long? ActiveTask_Insert(string token, ActiveTask task);
 }
