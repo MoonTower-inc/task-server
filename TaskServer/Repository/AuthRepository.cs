@@ -13,17 +13,17 @@ public class AuthRepository : RepositoryBase, IAuthRepository
         _connectionString = connectionString;
     }
     
-    public bool Register(string email, string password)
+    public bool Register(string login, string password)
     {
         using (var dataSource = NpgsqlDataSource.Create(_connectionString))
         {
             using (var connection = dataSource.OpenConnection())
             {
-                using (var cmd = new NpgsqlCommand("SELECT * FROM auth.register(@_email, @_password)", connection)
+                using (var cmd = new NpgsqlCommand("SELECT * FROM auth.register(@_login, @_password)", connection)
                        {
                            Parameters =
                            {
-                               safeNpgsqlParameter("_email", email),
+                               safeNpgsqlParameter("_login", login),
                                safeNpgsqlParameter("_password", password)
                            }
                        })

@@ -34,4 +34,34 @@ public class TaskController : Controller
         var newTaskId = _taskRepository.ActiveTask_Insert(token, new ActiveTask{Title = title, Description = description});
         return new JsonResult(new Dictionary<string, long?>{{"insertedTaskID", newTaskId}});
     }
+
+    [HttpPut("update")]
+    public IActionResult Update(string token, ActiveTask task)
+    {
+        if (_taskRepository.Task_Update(token, task))
+        {
+            return new OkResult();
+        }
+        return new ConflictResult();
+    }
+    
+    [HttpDelete("delete")]
+    public IActionResult Delete(string token, long taskId)
+    {
+        if (_taskRepository.Task_Delete(token, taskId))
+        {
+            return new OkResult();
+        }
+        return new ConflictResult();
+    }
+
+    [HttpPut("complete")]
+    public IActionResult Complete(string token, long[] taskIds)
+    {
+        if (_taskRepository.Task_MoveToDone(token, taskIds))
+        {
+            return new OkResult();
+        }
+        return new ConflictResult();
+    }
 }
