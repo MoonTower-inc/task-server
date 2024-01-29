@@ -28,7 +28,7 @@ public class TaskController : Controller
         return new JsonResult(doneTasks);
     }
 
-    [HttpGet("insert")]
+    [HttpPost("insert")]
     public IActionResult Insert(string token, string title, string description)
     {
         var newTaskId = _taskRepository.ActiveTask_Insert(token, new ActiveTask{Title = title, Description = description});
